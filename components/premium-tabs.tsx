@@ -3,16 +3,35 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { ChevronDown, Check } from "lucide-react"
+import { ChevronDown, Check, LucideProps, Brain, Zap, Lightbulb, Layers, Award, BookOpen, GraduationCap } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useReadStatus } from "@/hooks/use-read-status"
 
+// Icon Mapping
+const iconComponents: { [key: string]: React.FC<LucideProps> } = {
+  Brain,
+  Zap,
+  Lightbulb,
+  Layers,
+  Award,
+  BookOpen,
+  GraduationCap,
+  // Add other icons used by PremiumTabs elsewhere here if needed
+};
+
+// Helper function to get icon component
+const GetIcon = ({ name, ...props }: { name?: string } & LucideProps) => {
+  if (!name || !iconComponents[name]) return null; // Return null if name is missing or not found
+  const IconComponent = iconComponents[name];
+  return <IconComponent {...props} />;
+};
+
 interface Tab {
   value: string
   label: string
-  icon?: React.ReactNode
+  iconName?: string
   mobileLabel?: string
 }
 
@@ -108,7 +127,7 @@ export function PremiumTabs({
             >
               <div className="flex items-center gap-2">
                 <div className="bg-primary/10 rounded-full p-1.5 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                  {currentTab.icon}
+                  <GetIcon name={currentTab.iconName} className="h-4 w-4" />
                 </div>
                 <span className="font-medium">{currentTab.label}</span>
               </div>
@@ -131,7 +150,7 @@ export function PremiumTabs({
                     tab.value === currentValue ? "bg-primary text-white" : "bg-muted text-muted-foreground",
                   )}
                 >
-                  {tab.icon}
+                  <GetIcon name={tab.iconName} className="h-4 w-4" />
                 </div>
                 <span>{tab.label}</span>
                 {isRead(tab.value) && <Check className="ml-auto h-4 w-4 text-green-500" />}
@@ -173,7 +192,7 @@ export function PremiumTabs({
                   : "bg-primary/10 text-primary group-hover:bg-primary/20",
               )}
             >
-              {tab.icon}
+              <GetIcon name={tab.iconName} className="h-4 w-4" />
             </div>
             <span className="hidden md:inline font-medium">{tab.label}</span>
             <span className="inline md:hidden font-medium">{tab.mobileLabel || tab.label}</span>
