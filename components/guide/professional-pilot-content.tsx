@@ -811,83 +811,19 @@ export default function ProfessionalPilotContent({
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 md:py-10">
-      {/* Hero Section */}
-      <div className="relative mb-10 overflow-hidden rounded-xl bg-gradient-to-r from-aa-navy to-aa-blue p-8 text-white">
-        <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
-          <div className="relative h-full w-full">
-            <Image
-              src="/images/pilots-walking-past-jet.jpg" 
-              alt="Professional pilot illustration"
-              fill
-              className="object-contain"
-              priority 
-            />
-          </div>
-        </div>
-        <div className="max-w-3xl">
-          <Badge variant="outline" className="mb-4 border-white text-white">
-            AACA Professional Development
-          </Badge>
-          <h1 className="font-display text-3xl font-bold leading-tight md:text-4xl lg:text-5xl">
-            Becoming a Professional Pilot
-          </h1>
-          <p className="mt-4 text-lg opacity-90">
-            Your reputation starts now. Learn how to carry yourself as a professional, build meaningful connections,
-            give back to the aviation community, and maintain a mindset of continuous learning.
-          </p>
-        </div>
-      </div>
+    <div className="container mx-auto">
+      {/* Hero Section Removed - Now handled by GuidePageHeader */}
 
-      {/* Chapter Introduction */}
-      <div className="mb-12 rounded-xl border bg-card p-6 shadow-sm">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="font-display text-2xl font-bold text-aa-navy">Your Reputation Starts Now</h2>
-            <p className="mt-2 text-muted-foreground">
-              How you carry yourself now will follow you forever in your aviation career.
-            </p>
-          </div>
-          <Badge className="w-fit bg-aa-blue text-white">Essential Reading</Badge>
-        </div>
-        <div className="mt-6 prose prose-sm max-w-none dark:prose-invert">
-          <p>
-            By this point in your training, you've learned how to fly the aircraft, how to pass a checkride, how to
-            manage your mindset—and now it's time to zoom out. This chapter is about who you are becoming in the
-            process.
-          </p>
-          <p>
-            Being a professional pilot isn't just about being technically proficient. It's about how you carry yourself,
-            how you treat others, and how you contribute to the aviation community. Your reputation is already being
-            built, whether you realize it or not.
-          </p>
-          <p>
-            Every interaction—with instructors, classmates, DPEs, dispatchers, and even other students—leaves a
-            footprint. And in this industry? That footprint travels fast.
-          </p>
-          <div className="mt-6 rounded-lg bg-muted p-4 not-prose">
-            <h3 className="font-display text-lg font-medium">In this chapter, you'll learn:</h3>
-            <ul className="mt-2 space-y-2">
-              <li className="flex items-start">
-                <ChevronRight className="mr-2 h-5 w-5 text-aa-blue shrink-0" />
-                <span>What it means to act like a professional pilot before you get the uniform.</span>
-              </li>
-              <li className="flex items-start">
-                <ChevronRight className="mr-2 h-5 w-5 text-aa-blue shrink-0" />
-                <span>How to build meaningful connections and open doors through networking.</span>
-              </li>
-              <li className="flex items-start">
-                <ChevronRight className="mr-2 h-5 w-5 text-aa-blue shrink-0" />
-                <span>Why giving back to others makes you a better pilot (and a more respected one).</span>
-              </li>
-              <li className="flex items-start">
-                <ChevronRight className="mr-2 h-5 w-5 text-aa-blue shrink-0" />
-                <span>How to maintain a mindset of continuous learning—because aviation never stops evolving.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      {/* Alert Section */}
+      <Alert className="mb-8 bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700">
+        <Users className="h-4 w-4" /> 
+        <AlertTitle>Professional Development Matters</AlertTitle>
+        <AlertDescription>
+          Beyond flying skills, your professional conduct, networking abilities, and community involvement
+          are critical factors that will shape your career trajectory. The aviation industry is small, and your
+          reputation will follow you throughout your career.
+        </AlertDescription>
+      </Alert>
 
       {/* Main Content Area using PremiumTabs */}
       <section className="mb-16">
@@ -979,11 +915,10 @@ export default function ProfessionalPilotContent({
         </div>
       </div>
 
-      {/* --- Add Guide Navigation --- */}
-      <GuideNavigation
+      {/* Guide Navigation */}
+      <GuideNavigation 
         prevPage={prevPage ? { name: prevPage.name, url: prevPage.url } : undefined}
         nextPage={nextPage ? { name: nextPage.name, url: nextPage.url } : undefined}
-        currentPageUrl={pathname}
         nextTopicSegue={nextTopicSegue}
       />
     </div>
