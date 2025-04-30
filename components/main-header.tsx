@@ -5,7 +5,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Button } from "@/components/ui/button"
-import { Search, Bell, User, ChevronRight } from "lucide-react"
+import { Search, Bell, User, ChevronRight, Menu } from "lucide-react"
+import { useSidebar } from "@/components/ui/sidebar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +27,7 @@ const Logo = () => (
 export function MainHeader() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
+  const { toggleSidebar } = useSidebar()
 
   // Handle scroll effect for glass header
   useEffect(() => {
@@ -62,6 +64,16 @@ export function MainHeader() {
     >
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="md:hidden"
+            onClick={toggleSidebar}
+            aria-label="Toggle sidebar"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+
           <Link href="/" className="flex items-center gap-2">
             <Logo />
             <span className="font-display font-medium text-lg hidden md:inline-block">

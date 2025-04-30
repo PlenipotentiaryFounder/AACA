@@ -53,7 +53,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SidebarProvider>
             <div className="relative flex min-h-screen w-full">
-              <Sidebar className="hidden lg:flex">
+              <Sidebar>
                 <AppSidebarNav />
               </Sidebar>
               
