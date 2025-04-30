@@ -2,10 +2,23 @@ import type React from "react"
 import "./globals.css"
 import type { Metadata } from "next"
 import { Inter, Lexend } from "next/font/google"
+import Link from "next/link"
+import { Home, BookOpen, LifeBuoy, Settings } from "lucide-react"
 import { ThemeProvider } from "@/components/theme-provider"
-import { SidebarProvider } from "@/components/ui/sidebar"
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton
+} from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/toaster"
-import { MainHeader } from "@/components/main-header"
+import { AppSidebarNav } from "@/components/app-sidebar-nav"
+import { MainContentWrapper } from "@/components/main-content-wrapper"
+import { LayoutContainer } from "@/components/layout-container"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,12 +48,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${lexend.variable}`}>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased bg-background text-foreground min-h-screen w-full overflow-x-hidden m-0 p-0">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SidebarProvider>
-            <div className="flex min-h-screen flex-col">
-              <MainHeader />
-              <div className="flex-1">{children}</div>
+            <div className="relative flex min-h-screen w-full">
+              <Sidebar className="hidden lg:flex">
+                <AppSidebarNav />
+              </Sidebar>
+              
+              <LayoutContainer>
+                <MainContentWrapper>
+                  {children}
+                </MainContentWrapper>
+              </LayoutContainer>
             </div>
             <Toaster />
           </SidebarProvider>
@@ -49,7 +69,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-
-import './globals.css'

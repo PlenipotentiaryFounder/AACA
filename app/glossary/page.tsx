@@ -1,9 +1,6 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
-import { SidebarInset } from "@/components/ui/sidebar"
-import { MainHeader } from "@/components/main-header"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -925,233 +922,214 @@ export default function GlossaryPage() {
   )
 
   return (
-    <main className="min-h-screen" ref={topRef}>
-      <AppSidebar />
-      <SidebarInset>
-        <MainHeader />
+    <div className="container max-w-7xl py-6 lg:py-10">
+      <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
+        <div>
+          <h1 className="font-display text-4xl font-bold tracking-tight flex items-center gap-2">
+            <BookOpen className="h-8 w-8 text-primary" />
+            Plane-English Glossary
+          </h1>
+          <p className="text-xl text-muted-foreground mt-2">
+            Aviation terms and definitions in plain language for American Airlines Cadet Academy students
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={clearFilters}>
+            Clear Filters
+          </Button>
+          <Button size="sm">Download PDF</Button>
+        </div>
+      </div>
 
-        <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 max-w-7xl">
-          {/* Hero Section */}
-          <section className="mb-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
-              <div>
-                <h1 className="font-display text-4xl font-bold tracking-tight flex items-center gap-2">
-                  <BookOpen className="h-8 w-8 text-primary" />
-                  Plane-English Glossary
-                </h1>
-                <p className="text-xl text-muted-foreground mt-2">
-                  Aviation terms and definitions in plain language for American Airlines Cadet Academy students
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={clearFilters}>
-                  Clear Filters
-                </Button>
-                <Button size="sm">Download PDF</Button>
-              </div>
-            </div>
+      <div className="flex flex-wrap gap-1 mb-6">
+        {alphabet.map((letter) => (
+          <Button
+            key={letter}
+            variant={selectedLetter === letter ? "default" : "outline"}
+            size="sm"
+            className="w-8 h-8 p-0"
+            onClick={() => handleLetterClick(letter)}
+          >
+            {letter}
+          </Button>
+        ))}
+      </div>
 
-            {/* Alphabet Filter */}
-            <div className="flex flex-wrap gap-1 mb-6">
-              {alphabet.map((letter) => (
-                <Button
-                  key={letter}
-                  variant={selectedLetter === letter ? "default" : "outline"}
-                  size="sm"
-                  className="w-8 h-8 p-0"
-                  onClick={() => handleLetterClick(letter)}
-                >
-                  {letter}
-                </Button>
+      <div className="flex flex-col md:flex-row gap-4 mb-8">
+        <div className="relative flex-1">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search glossary terms..."
+            className="w-full pl-8"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
+        <div className="flex gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                {selectedCategory || "All Categories"}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleCategorySelect(null)}>All Categories</DropdownMenuItem>
+              {categories.map((category) => (
+                <DropdownMenuItem key={category} onClick={() => handleCategorySelect(category)}>
+                  {category}
+                </DropdownMenuItem>
               ))}
-            </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-            {/* Search and Filters */}
-            <div className="flex flex-col md:flex-row gap-4 mb-8">
-              <div className="relative flex-1">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search glossary terms..."
-                  className="w-full pl-8"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
+          <Button variant="outline" onClick={toggleSortOrder} className="flex items-center gap-2">
+            <ArrowUpDown className="h-4 w-4" />
+            {sortOrder === "asc" ? "A-Z" : "Z-A"}
+          </Button>
+        </div>
+      </div>
 
-              <div className="flex gap-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="flex items-center gap-2">
-                      <Filter className="h-4 w-4" />
-                      {selectedCategory || "All Categories"}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => handleCategorySelect(null)}>All Categories</DropdownMenuItem>
-                    {categories.map((category) => (
-                      <DropdownMenuItem key={category} onClick={() => handleCategorySelect(category)}>
-                        {category}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                <Button variant="outline" onClick={toggleSortOrder} className="flex items-center gap-2">
-                  <ArrowUpDown className="h-4 w-4" />
-                  {sortOrder === "asc" ? "A-Z" : "Z-A"}
-                </Button>
-              </div>
-            </div>
-          </section>
-
-          {/* Active Filters */}
-          {(selectedCategory || selectedLetter || searchQuery) && (
-            <div className="flex flex-wrap gap-2 mb-6">
-              <div className="text-sm text-muted-foreground">Active filters:</div>
-              {selectedCategory && (
-                <Badge variant="outline" className="flex items-center gap-1">
-                  Category: {selectedCategory}
-                  <button className="ml-1 hover:text-primary" onClick={() => setSelectedCategory(null)}>
-                    ×
-                  </button>
-                </Badge>
-              )}
-              {selectedLetter && (
-                <Badge variant="outline" className="flex items-center gap-1">
-                  Letter: {selectedLetter}
-                  <button className="ml-1 hover:text-primary" onClick={() => setSelectedLetter(null)}>
-                    ×
-                  </button>
-                </Badge>
-              )}
-              {searchQuery && (
-                <Badge variant="outline" className="flex items-center gap-1">
-                  Search: {searchQuery}
-                  <button className="ml-1 hover:text-primary" onClick={() => setSearchQuery("")}>
-                    ×
-                  </button>
-                </Badge>
-              )}
-            </div>
+      {(selectedCategory || selectedLetter || searchQuery) && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          <div className="text-sm text-muted-foreground">Active filters:</div>
+          {selectedCategory && (
+            <Badge variant="outline" className="flex items-center gap-1">
+              Category: {selectedCategory}
+              <button className="ml-1 hover:text-primary" onClick={() => setSelectedCategory(null)}>
+                ×
+              </button>
+            </Badge>
           )}
-
-          {/* View Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-            <TabsList>
-              <TabsTrigger value="all">All Terms</TabsTrigger>
-              <TabsTrigger value="alphabetical">Alphabetical</TabsTrigger>
-              <TabsTrigger value="categories">By Category</TabsTrigger>
-            </TabsList>
-
-            {/* Glossary Items */}
-            {filteredItems.length > 0 ? (
-              <>
-                {/* All Terms View */}
-                <TabsContent value="all" className="mt-0">
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {filteredItems.map((item) => (
-                      <Card key={item.term} className="hover-card-effect overflow-hidden">
-                        <CardHeader className="pb-3 bg-muted/50">
-                          <div className="flex justify-between items-start">
-                            <CardTitle className="text-xl">{item.term}</CardTitle>
-                            <Badge>{item.category}</Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-4">
-                          <p className="whitespace-pre-line">{item.definition}</p>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </TabsContent>
-
-                {/* Alphabetical View */}
-                <TabsContent value="alphabetical" className="mt-0">
-                  {Object.keys(groupedByLetter)
-                    .sort()
-                    .map((letter) => (
-                      <div key={letter} className="mb-8">
-                        <h2 className="text-2xl font-bold mb-4 flex items-center">
-                          <span className="bg-primary text-primary-foreground w-10 h-10 rounded-full flex items-center justify-center mr-3">
-                            {letter}
-                          </span>
-                          <span>Terms</span>
-                        </h2>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                          {groupedByLetter[letter].map((item) => (
-                            <Card key={item.term} className="hover-card-effect overflow-hidden">
-                              <CardHeader className="pb-3 bg-muted/50">
-                                <div className="flex justify-between items-start">
-                                  <CardTitle className="text-xl">{item.term}</CardTitle>
-                                  <Badge>{item.category}</Badge>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="pt-4">
-                                <p className="whitespace-pre-line">{item.definition}</p>
-                              </CardContent>
-                            </Card>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                </TabsContent>
-
-                {/* Categories View */}
-                <TabsContent value="categories" className="mt-0">
-                  {categories
-                    .filter((category) => filteredItems.some((item) => item.category === category))
-                    .sort()
-                    .map((category) => (
-                      <div key={category} className="mb-8">
-                        <h2 className="text-2xl font-bold mb-4 flex items-center">
-                          <span className="bg-primary/10 text-primary px-3 py-1 rounded-md mr-3">{category}</span>
-                        </h2>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                          {filteredItems
-                            .filter((item) => item.category === category)
-                            .map((item) => (
-                              <Card key={item.term} className="hover-card-effect overflow-hidden">
-                                <CardHeader className="pb-3 bg-muted/50">
-                                  <CardTitle className="text-xl">{item.term}</CardTitle>
-                                </CardHeader>
-                                <CardContent className="pt-4">
-                                  <p className="whitespace-pre-line">{item.definition}</p>
-                                </CardContent>
-                              </Card>
-                            ))}
-                        </div>
-                      </div>
-                    ))}
-                </TabsContent>
-              </>
-            ) : (
-              <TabsContent value={activeTab} className="mt-0">
-                <div className="text-center py-16 bg-muted/30 rounded-xl border">
-                  <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-xl font-medium mb-2">No terms found</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Try adjusting your search or filters to find what you're looking for.
-                  </p>
-                  <Button onClick={clearFilters}>Clear All Filters</Button>
-                </div>
-              </TabsContent>
-            )}
-          </Tabs>
-
-          {/* Back to Top Button */}
-          {showBackToTop && (
-            <Button
-              className="fixed bottom-8 right-8 rounded-full w-12 h-12 p-0 shadow-lg"
-              onClick={scrollToTop}
-              aria-label="Back to top"
-            >
-              <ChevronUp className="h-6 w-6" />
-            </Button>
+          {selectedLetter && (
+            <Badge variant="outline" className="flex items-center gap-1">
+              Letter: {selectedLetter}
+              <button className="ml-1 hover:text-primary" onClick={() => setSelectedLetter(null)}>
+                ×
+              </button>
+            </Badge>
+          )}
+          {searchQuery && (
+            <Badge variant="outline" className="flex items-center gap-1">
+              Search: {searchQuery}
+              <button className="ml-1 hover:text-primary" onClick={() => setSearchQuery("")}>
+                ×
+              </button>
+            </Badge>
           )}
         </div>
-      </SidebarInset>
-    </main>
+      )}
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+        <TabsList>
+          <TabsTrigger value="all">All Terms</TabsTrigger>
+          <TabsTrigger value="alphabetical">Alphabetical</TabsTrigger>
+          <TabsTrigger value="categories">By Category</TabsTrigger>
+        </TabsList>
+
+        {filteredItems.length > 0 ? (
+          <>
+            <TabsContent value="all" className="mt-0">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredItems.map((item) => (
+                  <Card key={item.term} className="hover-card-effect overflow-hidden">
+                    <CardHeader className="pb-3 bg-muted/50">
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="text-xl">{item.term}</CardTitle>
+                        <Badge>{item.category}</Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-4">
+                      <p className="whitespace-pre-line">{item.definition}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="alphabetical" className="mt-0">
+              {Object.keys(groupedByLetter)
+                .sort()
+                .map((letter) => (
+                  <div key={letter} className="mb-8">
+                    <h2 className="text-2xl font-bold mb-4 flex items-center">
+                      <span className="bg-primary text-primary-foreground w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                        {letter}
+                      </span>
+                      <span>Terms</span>
+                    </h2>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {groupedByLetter[letter].map((item) => (
+                        <Card key={item.term} className="hover-card-effect overflow-hidden">
+                          <CardHeader className="pb-3 bg-muted/50">
+                            <div className="flex justify-between items-start">
+                              <CardTitle className="text-xl">{item.term}</CardTitle>
+                              <Badge>{item.category}</Badge>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <p className="whitespace-pre-line">{item.definition}</p>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+            </TabsContent>
+
+            <TabsContent value="categories" className="mt-0">
+              {categories
+                .filter((category) => filteredItems.some((item) => item.category === category))
+                .sort()
+                .map((category) => (
+                  <div key={category} className="mb-8">
+                    <h2 className="text-2xl font-bold mb-4 flex items-center">
+                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-md mr-3">{category}</span>
+                    </h2>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {filteredItems
+                        .filter((item) => item.category === category)
+                        .map((item) => (
+                          <Card key={item.term} className="hover-card-effect overflow-hidden">
+                            <CardHeader className="pb-3 bg-muted/50">
+                              <CardTitle className="text-xl">{item.term}</CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-4">
+                              <p className="whitespace-pre-line">{item.definition}</p>
+                            </CardContent>
+                          </Card>
+                        ))}
+                    </div>
+                  </div>
+                ))}
+            </TabsContent>
+          </>
+        ) : (
+          <TabsContent value={activeTab} className="mt-0">
+            <div className="text-center py-16 bg-muted/30 rounded-xl border">
+              <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-medium mb-2">No terms found</h3>
+              <p className="text-muted-foreground mb-4">
+                Try adjusting your search or filters to find what you're looking for.
+              </p>
+              <Button onClick={clearFilters}>Clear All Filters</Button>
+            </div>
+          </TabsContent>
+        )}
+      </Tabs>
+
+      {showBackToTop && (
+        <Button
+          className="fixed bottom-8 right-8 rounded-full w-12 h-12 p-0 shadow-lg"
+          onClick={scrollToTop}
+          aria-label="Back to top"
+        >
+          <ChevronUp className="h-6 w-6" />
+        </Button>
+      )}
+    </div>
   )
 }
 

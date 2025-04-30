@@ -3,9 +3,6 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
-import { SidebarInset } from "@/components/ui/sidebar"
-import { MainHeader } from "@/components/main-header"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -136,122 +133,115 @@ export default function SearchPage() {
   const filteredResults = activeTab === "all" ? results : results.filter((result) => result.type === activeTab)
 
   return (
-    <main className="min-h-screen">
-      <AppSidebar />
-      <SidebarInset>
-        <MainHeader />
+    <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
+      <section className="max-w-4xl mx-auto">
+        <form onSubmit={handleSearch} className="mb-8">
+          <h1 className="font-display text-4xl font-bold tracking-tight mb-6">Search Results</h1>
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search for topics, terms, or procedures..."
+              className="w-full pl-12 py-6 text-lg rounded-full border-primary/20 focus-visible:ring-primary"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full">
+              Search
+            </Button>
+          </div>
+        </form>
 
-        <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 max-w-7xl">
-          <section className="max-w-4xl mx-auto">
-            <form onSubmit={handleSearch} className="mb-8">
-              <h1 className="font-display text-4xl font-bold tracking-tight mb-6">Search Results</h1>
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search for topics, terms, or procedures..."
-                  className="w-full pl-12 py-6 text-lg rounded-full border-primary/20 focus-visible:ring-primary"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full">
-                  Search
+        {searchQuery && (
+          <>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-medium">
+                {isLoading ? (
+                  <span className="animate-pulse">Searching...</span>
+                ) : (
+                  <span>
+                    {results.length} results for "{searchQuery}"
+                  </span>
+                )}
+              </h2>
+
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
+                  Filter
+                </Button>
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <ArrowUpDown className="h-4 w-4" />
+                  Sort
                 </Button>
               </div>
-            </form>
+            </div>
 
-            {searchQuery && (
-              <>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-medium">
-                    {isLoading ? (
-                      <span className="animate-pulse">Searching...</span>
-                    ) : (
-                      <span>
-                        {results.length} results for "{searchQuery}"
-                      </span>
-                    )}
-                  </h2>
+            <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-6">
+              <TabsList className="grid grid-cols-5">
+                <TabsTrigger value="all" className="flex items-center gap-1">
+                  All ({results.length})
+                </TabsTrigger>
+                <TabsTrigger value="article" className="flex items-center gap-1">
+                  Articles ({results.filter((r) => r.type === "article").length})
+                </TabsTrigger>
+                <TabsTrigger value="glossary" className="flex items-center gap-1">
+                  Glossary ({results.filter((r) => r.type === "glossary").length})
+                </TabsTrigger>
+                <TabsTrigger value="resource" className="flex items-center gap-1">
+                  Resources ({results.filter((r) => r.type === "resource").length})
+                </TabsTrigger>
+                <TabsTrigger value="video" className="flex items-center gap-1">
+                  Videos ({results.filter((r) => r.type === "video").length})
+                </TabsTrigger>
+              </TabsList>
 
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="flex items-center gap-2">
-                      <Filter className="h-4 w-4" />
-                      Filter
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex items-center gap-2">
-                      <ArrowUpDown className="h-4 w-4" />
-                      Sort
-                    </Button>
-                  </div>
-                </div>
+              <TabsContent value="all" className="mt-6">
+                <ResultsList results={filteredResults} isLoading={isLoading} />
+              </TabsContent>
 
-                <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-6">
-                  <TabsList className="grid grid-cols-5">
-                    <TabsTrigger value="all" className="flex items-center gap-1">
-                      All ({results.length})
-                    </TabsTrigger>
-                    <TabsTrigger value="article" className="flex items-center gap-1">
-                      Articles ({results.filter((r) => r.type === "article").length})
-                    </TabsTrigger>
-                    <TabsTrigger value="glossary" className="flex items-center gap-1">
-                      Glossary ({results.filter((r) => r.type === "glossary").length})
-                    </TabsTrigger>
-                    <TabsTrigger value="resource" className="flex items-center gap-1">
-                      Resources ({results.filter((r) => r.type === "resource").length})
-                    </TabsTrigger>
-                    <TabsTrigger value="video" className="flex items-center gap-1">
-                      Videos ({results.filter((r) => r.type === "video").length})
-                    </TabsTrigger>
-                  </TabsList>
+              <TabsContent value="article" className="mt-6">
+                <ResultsList results={filteredResults} isLoading={isLoading} />
+              </TabsContent>
 
-                  <TabsContent value="all" className="mt-6">
-                    <ResultsList results={filteredResults} isLoading={isLoading} />
-                  </TabsContent>
+              <TabsContent value="glossary" className="mt-6">
+                <ResultsList results={filteredResults} isLoading={isLoading} />
+              </TabsContent>
 
-                  <TabsContent value="article" className="mt-6">
-                    <ResultsList results={filteredResults} isLoading={isLoading} />
-                  </TabsContent>
+              <TabsContent value="resource" className="mt-6">
+                <ResultsList results={filteredResults} isLoading={isLoading} />
+              </TabsContent>
 
-                  <TabsContent value="glossary" className="mt-6">
-                    <ResultsList results={filteredResults} isLoading={isLoading} />
-                  </TabsContent>
+              <TabsContent value="video" className="mt-6">
+                <ResultsList results={filteredResults} isLoading={isLoading} />
+              </TabsContent>
+            </Tabs>
+          </>
+        )}
 
-                  <TabsContent value="resource" className="mt-6">
-                    <ResultsList results={filteredResults} isLoading={isLoading} />
-                  </TabsContent>
+        {!searchQuery && (
+          <div className="text-center py-16 bg-muted/30 rounded-xl border">
+            <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-medium mb-2">Start searching</h3>
+            <p className="text-muted-foreground mb-4 max-w-md mx-auto">
+              Enter a search term above to find articles, glossary terms, resources, and videos.
+            </p>
+          </div>
+        )}
 
-                  <TabsContent value="video" className="mt-6">
-                    <ResultsList results={filteredResults} isLoading={isLoading} />
-                  </TabsContent>
-                </Tabs>
-              </>
-            )}
-
-            {!searchQuery && (
-              <div className="text-center py-16 bg-muted/30 rounded-xl border">
-                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-medium mb-2">Start searching</h3>
-                <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-                  Enter a search term above to find articles, glossary terms, resources, and videos.
-                </p>
-              </div>
-            )}
-
-            {searchQuery && results.length === 0 && !isLoading && (
-              <div className="text-center py-16 bg-muted/30 rounded-xl border">
-                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-medium mb-2">No results found</h3>
-                <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-                  We couldn't find any matches for "{searchQuery}". Try different keywords or browse the categories in
-                  the sidebar.
-                </p>
-                <Button onClick={() => setSearchQuery("")}>Clear Search</Button>
-              </div>
-            )}
-          </section>
-        </div>
-      </SidebarInset>
-    </main>
+        {searchQuery && results.length === 0 && !isLoading && (
+          <div className="text-center py-16 bg-muted/30 rounded-xl border">
+            <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-medium mb-2">No results found</h3>
+            <p className="text-muted-foreground mb-4 max-w-md mx-auto">
+              We couldn't find any matches for "{searchQuery}". Try different keywords or browse the categories in
+              the sidebar.
+            </p>
+            <Button onClick={() => setSearchQuery("")}>Clear Search</Button>
+          </div>
+        )}
+      </section>
+    </div>
   )
 }
 
