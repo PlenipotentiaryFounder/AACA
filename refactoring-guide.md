@@ -5,9 +5,9 @@
 - [x] `app/guide/faq`
 - [x] `app/guide/pro-tips`
 - [x] `app/guide/professional-pilot`
-- [ ] `app/guide/mental-resilience` (and subdirectories like `managing-stress`, `avoiding-burnout`, etc., if they have their own `page.tsx`)
-- [ ] `app/guide/checkrides` (and subdirectories like `private`, `instrument`, etc., if they have their own `page.tsx`)
-- [ ] `app/guide/knowledge-tests`
+- [x] `app/guide/mental-resilience` (and subdirectories like `managing-stress`, `avoiding-burnout`, etc., if they have their own `page.tsx`)
+- [x] `app/guide/checkrides` (and subdirectories like `private`, `instrument`, etc., if they have their own `page.tsx`)
+- [x] `app/guide/knowledge-tests`
 - [ ] `app/guide/flight-training`
 
 ---

@@ -3012,7 +3012,7 @@ Absolutely—let’s keep the same strong rhythm and tone we’ve built so far.
 
 ---
 
-# Chapter 6: How to Pass Your FAA Knowledge Exams
+# Chapter 7: How to Pass Your FAA Knowledge Exams
 
 ## Summary
 

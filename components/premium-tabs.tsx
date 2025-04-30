@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { ChevronDown, Check, LucideProps, Brain, Zap, Lightbulb, Layers, Award, BookOpen, GraduationCap } from "lucide-react"
+import { ChevronDown, Check, LucideProps, Brain, Zap, Lightbulb, Layers, Award, BookOpen, GraduationCap, FileText, HeartPulse, Plane, Shield, UserCheck, AlertTriangle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -18,6 +18,12 @@ const iconComponents: { [key: string]: React.FC<LucideProps> } = {
   Award,
   BookOpen,
   GraduationCap,
+  FileText,
+  HeartPulse,
+  Plane,
+  Shield,
+  UserCheck,
+  AlertTriangle,
   // Add other icons used by PremiumTabs elsewhere here if needed
 };
 
@@ -37,9 +43,9 @@ interface Tab {
 
 interface PremiumTabsProps {
   tabs: Tab[]
-  defaultValue: string
-  onChange: (value: string) => void
-  currentValue: string
+  defaultValue?: string
+  onChange?: (value: string) => void
+  currentValue?: string
   className?: string
   title?: string
 }
@@ -108,7 +114,7 @@ export function PremiumTabs({
     }
 
     // Also call the onChange handler
-    onChange(value)
+    onChange?.(value)
     markAsRead(value)
   }
 
