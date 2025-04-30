@@ -10,15 +10,17 @@ This checklist tracks the refactoring of guide pages to use the new `GuidePageHe
 - [x] `app/guide/knowledge-tests/page.tsx` - Complete with GuidePageHeader and navigation
 - [x] `app/guide/checkrides/page.tsx` - Complete with GuidePageHeader and navigation
 - [x] `app/guide/professional-pilot/page.tsx` - Complete with GuidePageHeader and navigation
+- [x] `app/guide/faq/page.tsx`
+- [x] `app/guide/pro-tips/page.tsx` - Complete with GuidePageHeader
+- [x] `app/guide/training-expectations/page.tsx` - Complete with GuidePageHeader
+- [x] `app/guide/welcome/page.tsx` - Complete with GuidePageHeader
 
 ## Pages with Navigation Fixed (but no GuidePageHeader)
 - [ ] None remaining in this category
 
 ## Pages To Be Refactored
-- [ ] `app/guide/faq/page.tsx`
-- [ ] `app/guide/pro-tips/page.tsx`
-- [ ] `app/guide/training-expectations/page.tsx`
-- [ ] `app/guide/welcome/page.tsx`
+
+- [ ] None remaining - all pages have been refactored!
 
 ## Implementation Notes
 - Ensure consistent PageLink format across all pages (`{name, url}`)

@@ -17,8 +17,8 @@ import { SidebarInset } from "@/components/ui/sidebar"
 
 // Import the newly created Client Component
 import TrainingExpectationsContent from "@/components/guide/training-expectations-content"
-// Import the Audio Player
-import AudioPlayer from "@/components/guide/audio-player"
+// Import the GuidePageHeader
+import GuidePageHeader from "@/components/guide/guide-page-header"
 
 // Metadata export remains
 export const metadata: Metadata = {
@@ -67,6 +67,29 @@ interface PageLink {
     url: string;
 }
 
+// GuidePageHeader data
+const chapter = "Chapter 2";
+const title = "What to Expect in Training";
+const description = "A comprehensive overview of your journey from cadet to professional pilot.";
+const topicBadges = ["Training Structure", "Timeline", "Daily Life", "Cadet Community"];
+const audioSrc = "/audioFiles/Guide/Train Smarter, Fly Better_ Unlock Your American Airlines Cadet Academy Potential.wav";
+const trackTitle = "Train Smarter, Fly Better: Unlock Your American Airlines Cadet Academy Potential";
+const subtitleSrc = "/audioFiles/Guide/Train Smarter, Fly Better_ Unlock Your American Airlines Cadet Academy Potential.vtt";
+const backgroundImageSrc = "/images/multiple-aircraft-on-ramp.jpg";
+const headerButtonsData = [
+  {
+    text: "Start Your Journey",
+    href: "#overview",
+    variant: "default" as const
+  },
+  {
+    text: "Explore Timeline",
+    href: "#timeline",
+    variant: "outline" as const,
+    icon: <ChevronRight className="ml-2 h-4 w-4" />
+  }
+];
+
 // Server Component Definition
 export default function TrainingExpectationsPage() {
   // Define props needed by the client component
@@ -77,45 +100,18 @@ export default function TrainingExpectationsPage() {
   return (
     <main className="min-h-screen">
       <div className="container max-w-7xl mx-auto py-8 px-4 md:px-6 lg:px-8">
-        {/* Hero Section (Server Component part) */}
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-aa-blue to-aa-navy text-white mb-12">
-          {/* Ensure necessary icons/components for hero are imported above */}
-          <div className="absolute inset-0 bg-[url('/images/multiple-aircraft-on-ramp.jpg')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
-           <div className="relative z-10 px-6 py-16 md:py-24 md:px-12">
-               {/* Flex container for text and audio player */}
-               <div className="md:flex md:items-start md:justify-between md:gap-8">
-                   {/* Text Content Area */}
-                   <div className="max-w-4xl mb-8 md:mb-0">
-                       <Badge className="mb-4 bg-white/20 hover:bg-white/30 text-white border-none">Chapter 2</Badge>
-                       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
-                           What to Expect in Training
-                       </h1>
-                       <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl">
-                           A comprehensive overview of your journey from cadet to professional pilot.
-                       </p>
-                   </div>
-                   {/* Audio Player Area */}
-                   <div className="flex-shrink-0">
-                       <AudioPlayer 
-                           audioSrc="/audioFiles/Guide/Train Smarter, Fly Better_ Unlock Your American Airlines Cadet Academy Potential.wav"
-                           trackTitle="Train Smarter, Fly Better" 
-                           subtitleSrc="/audioFiles/Guide/Train Smarter, Fly Better_ Unlock Your American Airlines Cadet Academy Potential.vtt"
-                       />
-                   </div>
-               </div>
-               <div className="flex flex-wrap gap-4 mt-8">
-                   <Button size="lg" className="bg-white text-aa-navy hover:bg-white/90">
-                       Start Your Journey
-                   </Button>
-                   <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20">
-                       Explore Timeline <ChevronRight className="ml-2 h-4 w-4" />
-                   </Button>
-               </div>
-           </div>
-           <div className="absolute bottom-0 right-0 w-64 h-64 md:w-96 md:h-96 -mb-12 -mr-12 opacity-20 md:opacity-30">
-               <div className="w-full h-full bg-[url('/images/pilot-instructor-student-cockpit.jpg')] bg-contain bg-no-repeat"></div>
-           </div>
-        </section>
+        {/* New GuidePageHeader Component */}
+        <GuidePageHeader
+          chapter={chapter}
+          title={title}
+          description={description}
+          topicBadges={topicBadges}
+          audioSrc={audioSrc}
+          trackTitle={trackTitle}
+          subtitleSrc={subtitleSrc}
+          headerButtons={headerButtonsData}
+          backgroundImageSrc={backgroundImageSrc}
+        />
         
         {/* Render the imported Client Component, passing props */}
         <TrainingExpectationsContent 

@@ -28,6 +28,7 @@ import {
 
 // Import the new client component
 import ProTipsContent from "@/components/guide/pro-tips-content";
+import GuidePageHeader from "@/components/guide/guide-page-header";
 
 // Metadata for the page
 export const metadata: Metadata = {
@@ -46,6 +47,7 @@ interface Tip {
   id: number;
   title: string;
   category: string;
+  description: string;
   icon?: React.ReactNode;
   color?: string;
 }
@@ -57,6 +59,16 @@ interface CadetStory {
   avatar: string;
   story: string[];
 }
+
+// GuidePageHeader data
+const chapter = "Cadet Wisdom";
+const title = "Pro Tips & Lessons from Past Cadets";
+const description = "Hard-earned insights from those who walked this path before you. The kind of wisdom that only comes from experience—now passed directly to you.";
+const topicBadges = ["Training", "Mindset", "Preparation", "Resources"];
+const audioSrc = "/audioFiles/Guide/Soar Beyond Memorization_ Your American Airlines Cadet Flight Plan.wav";
+const trackTitle = "Soar Beyond Memorization: Your American Airlines Cadet Flight Plan";
+const subtitleSrc = "/audioFiles/Guide/Train Smarter, Fly Better_ Unlock Your American Airlines Cadet Academy Potential.vtt";
+const backgroundImageSrc = "/images/pilot-instructor-student-cockpit.jpg";
 
 // Define static data within the Server Component
 const categories: Category[] = [
@@ -72,6 +84,7 @@ const tips: Tip[] = [
     id: 1,
     title: "Don't learn in the plane what you could've learned on the ground",
     category: "preparation",
+    description: "Every minute in the airplane is expensive, both in time and money. If you're using flight time to learn what you could've studied, chair-flown, or memorized beforehand, you're behind. Know the maneuvers. Know the flows. Know the ACS tolerances.",
     icon: <BookOpen className="h-5 w-5" />,
     color: "blue",
   },
@@ -79,6 +92,7 @@ const tips: Tip[] = [
     id: 2,
     title: "Being a great student matters more than having a great instructor",
     category: "mindset",
+    description: "Yes, a strong CFI helps. But the students who go the furthest are the ones who take ownership—regardless of who's sitting in the right seat. A great student shows up prepared, asks good questions, and drives their own progress.",
     icon: <Users className="h-5 w-5" />,
     color: "blue",
   },
@@ -86,6 +100,7 @@ const tips: Tip[] = [
     id: 3,
     title: "If you don't want to be the best, you'll end up being the worst",
     category: "mindset",
+    description: "This industry rewards excellence, discipline, and consistency. There's no participation trophy in aviation. You're either the pilot who people trust—or you're not. Wanting to be the best doesn't mean being arrogant.",
     icon: <Star className="h-5 w-5" />,
     color: "blue",
   },
@@ -93,6 +108,7 @@ const tips: Tip[] = [
     id: 4,
     title: "Gouge is great—until it isn't",
     category: "preparation",
+    description: "Gouge (informal insights from other students about what a specific DPE asks) can help you know what to expect—but it can also backfire. Every checkride is different. Examiners can change their flow, or ask questions outside the gouge entirely.",
     icon: <FileText className="h-5 w-5" />,
     color: "blue",
   },
@@ -100,6 +116,7 @@ const tips: Tip[] = [
     id: 5,
     title: "The sooner you stop comparing yourself to others, the faster you'll grow",
     category: "mindset",
+    description: "Some cadets solo in 15 hours. Some take 30. Neither one matters. The only flight you need to worry about is your next one. Comparing timelines will just steal your confidence. Your path is your path—and no one else's.",
     icon: <Compass className="h-5 w-5" />,
     color: "blue",
   },
@@ -107,6 +124,7 @@ const tips: Tip[] = [
     id: 6,
     title: "Your name is your reputation—protect it",
     category: "mindset",
+    description: "Aviation is a small world. If you show up late, unprepared, or with a bad attitude, people will remember. But if you carry yourself like a pro—organized, respectful, consistent—that will follow you, too.",
     icon: <Shield className="h-5 w-5" />,
     color: "blue",
   },
@@ -114,6 +132,7 @@ const tips: Tip[] = [
     id: 7,
     title: "Training plateaus are not failure—they're growth in disguise",
     category: "training",
+    description: "Every student hits a wall. Sometimes it's steep turns. Sometimes it's radios. Sometimes it's confidence. What matters is that you don't let that moment define you. Take a breather. Chair fly. Talk to your instructor.",
     icon: <Brain className="h-5 w-5" />,
     color: "green",
   },
@@ -121,6 +140,7 @@ const tips: Tip[] = [
     id: 8,
     title: "Fly the lesson before you fly the airplane",
     category: "training",
+    description: "Chair flying is non-negotiable. Whether it's in your room, in a parked plane, or with a cockpit poster—rehearse every flow, every maneuver, every checklist before you ever take off.",
     icon: <Plane className="h-5 w-5" />,
     color: "green",
   },
@@ -128,6 +148,7 @@ const tips: Tip[] = [
     id: 9,
     title: "If you're not actively managing your stress, it's managing you",
     category: "mindset",
+    description: "This program is intense. You're juggling checkrides, writtens, money, and sleep—all while learning to fly an airplane. Build your own toolkit: workouts, journaling, breaks, support calls, breathing.",
     icon: <Heart className="h-5 w-5" />,
     color: "amber",
   },
@@ -135,6 +156,7 @@ const tips: Tip[] = [
     id: 10,
     title: "You won't build PIC confidence if you're never in command",
     category: "training",
+    description: "Most of your training is dual—so you may not feel like you're in charge. But every flight is an opportunity to think and act like the PIC. Start making decisions. Start briefing the weather.",
     icon: <Shield className="h-5 w-5" />,
     color: "amber",
   },
@@ -142,6 +164,7 @@ const tips: Tip[] = [
     id: 11,
     title: "You can't fake preparation",
     category: "preparation",
+    description: "Checkride nerves are natural. But nothing kills anxiety faster than knowing, deep down, that you're prepared. You've done the work. You've trained to standard. You've reviewed every ACS Task.",
     icon: <AlertTriangle className="h-5 w-5" />,
     color: "amber",
   },
@@ -149,6 +172,7 @@ const tips: Tip[] = [
     id: 12,
     title: "Train like you fly, fly like you train",
     category: "training",
+    description: "This one's gospel. Sloppy habits in training become liabilities in real flying. Treat every flight like the real thing: sterile cockpit, checklists, positive exchanges of controls, professional radio calls.",
     icon: <Zap className="h-5 w-5" />,
     color: "blue",
   },
@@ -216,13 +240,29 @@ const cadetStories: CadetStory[] = [
 export default function ProTipsPage() {
   // The data is defined above
 
-  // Render the client component, passing the data as props
   return (
-    <ProTipsContent
-      categories={categories}
-      tips={tips}
-      cadetStories={cadetStories}
-    />
+    <main className="min-h-screen">
+      <div className="container max-w-7xl mx-auto py-8 px-4 md:px-6 lg:px-8">
+        {/* New GuidePageHeader Component */}
+        <GuidePageHeader
+          chapter={chapter}
+          title={title}
+          description={description}
+          topicBadges={topicBadges}
+          audioSrc={audioSrc}
+          trackTitle={trackTitle}
+          subtitleSrc={subtitleSrc}
+          backgroundImageSrc={backgroundImageSrc}
+        />
+
+        {/* Render the client component, passing the data as props */}
+        <ProTipsContent
+          categories={categories}
+          tips={tips}
+          cadetStories={cadetStories}
+        />
+      </div>
+    </main>
   );
 }
 
