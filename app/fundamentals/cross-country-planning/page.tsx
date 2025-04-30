@@ -30,7 +30,7 @@ import Link from "next/link"
 
 export default function CrossCountryPlanningPage() {
   return (
-    <main className="min-h-screen">
+    <div className="py-8 px-4 md:px-6 lg:px-8">
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
@@ -636,6 +636,6 @@ export default function CrossCountryPlanningPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

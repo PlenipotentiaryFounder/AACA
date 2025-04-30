@@ -22,8 +22,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export default function AircraftSystemsPage() {
   return (
-    <div className="container max-w-4xl py-6 lg:py-10">
-      <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 max-w-7xl">
+    <div className="py-8 px-4 md:px-6 lg:px-8">
+      <div className="container max-w-4xl py-6 lg:py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">

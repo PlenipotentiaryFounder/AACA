@@ -36,7 +36,8 @@ export const metadata: Metadata = {
   title: "AACA Student Pilot Guide",
   description: "A comprehensive digital guide for American Airlines Cadet Academy students",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/aa-logo-favicon.svg",
+    type: "image/svg+xml",
   },
     generator: 'v0.dev'
 }

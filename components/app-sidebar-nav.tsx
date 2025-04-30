@@ -176,7 +176,7 @@ const guideNav = [
   { title: "Welcome", icon: GraduationCap, url: "/guide/welcome" },
   { title: "Training Expectations", icon: BookMarked, url: "/guide/training-expectations" },
   { title: "Learning Fundamentals", icon: Lightbulb, url: "/guide/learning" },
-  { title: "Resources & Tools", icon: FileText, url: "/guide/resources", badge: { text: "Essential", variant: "outline" } },
+  { title: "Resources & Tools", icon: FileText, url: "/guide/resources" },
   { title: "Flight Training", icon: Plane, url: "/guide/flight-training" },
   {
     title: "Mental Resilience", icon: Brain, url: "/guide/mental-resilience",
@@ -190,7 +190,7 @@ const guideNav = [
   },
   { title: "Knowledge Tests", icon: PenTool, url: "/guide/knowledge-tests" },
   {
-    title: "Checkrides", icon: Award, url: "/guide/checkrides", badge: { text: "Important", variant: "default" },
+    title: "Checkrides", icon: Award, url: "/guide/checkrides",
     subItems: [
       { title: "Overview", url: "/guide/checkrides" },
       { title: "Private Pilot", url: "/guide/checkrides/private" },
@@ -203,18 +203,18 @@ const guideNav = [
     ]
   },
   { title: "Professional Development", icon: Zap, url: "/guide/professional-pilot" },
-  { title: "Pro Tips", icon: MessageSquare, url: "/guide/pro-tips", badge: { text: "New", variant: "default" } },
-  { title: "FAQs", icon: ShieldQuestion, url: "/guide/faq" }, // Using ShieldQuestion for FAQ
+  { title: "Pro Tips", icon: MessageSquare, url: "/guide/pro-tips" },
+  { title: "FAQs", icon: ShieldQuestion, url: "/guide/faq" },
 ];
 
 const fundamentalsNav = [
   { title: "Overview", icon: Compass, url: "/fundamentals" },
   { title: "Aerodynamics", icon: Wind, url: "/fundamentals/aerodynamics" },
   { title: "Aircraft Systems", icon: Settings, url: "/fundamentals/aircraft-systems" },
-  { title: "Airspace", icon: Map, url: "/fundamentals/airspace" }, // Using Map for Airspace
-  { title: "Cross Country Planning", icon: Compass, url: "/fundamentals/cross-country-planning" }, // Re-use Compass?
+  { title: "Airspace", icon: Map, url: "/fundamentals/airspace" },
+  { title: "Cross Country Planning", icon: Compass, url: "/fundamentals/cross-country-planning" },
   { title: "Flight Instruments", icon: Gauge, url: "/fundamentals/flight-instruments" },
-  { title: "Navigation", icon: Compass, url: "/fundamentals/navigation" }, // Maybe another Compass?
+  { title: "Navigation", icon: Compass, url: "/fundamentals/navigation" },
   { title: "Radio Communications", icon: Radio, url: "/fundamentals/radio-communications" },
   {
     title: "Risk Management", icon: AlertTriangle, url: "/fundamentals/risk-management",
@@ -223,12 +223,12 @@ const fundamentalsNav = [
       { title: "PAVE Model", url: "/fundamentals/risk-management/pave" },
     ]
   },
-  { title: "Sectional Charts", icon: Map, url: "/fundamentals/sectional-charts" }, // Using Map again
-  { title: "Traffic Patterns", icon: Plane, url: "/fundamentals/traffic-patterns" }, // Re-use Plane?
+  { title: "Sectional Charts", icon: Map, url: "/fundamentals/sectional-charts" },
+  { title: "Traffic Patterns", icon: Plane, url: "/fundamentals/traffic-patterns" },
   { title: "Weather", icon: CloudSun, url: "/fundamentals/weather" },
 ];
 
-const glossaryNav = { title: "Plane English Glossary", icon: BookMarked, url: "/glossary" }; // Assuming /glossary path
+const glossaryNav = { title: "Plane English Glossary", icon: BookMarked, url: "/glossary" };
 
 // --- Refactored NavMenuItem Helper --- (Re-added)
 const NavMenuItem = ({ item, isSubmenu = false }: { item: any; isSubmenu?: boolean }) => {

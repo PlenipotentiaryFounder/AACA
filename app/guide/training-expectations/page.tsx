@@ -98,31 +98,27 @@ export default function TrainingExpectationsPage() {
   const nextTopicSegue = "Having covered the expectations, let's explore the specifics of Flight Training and how to maximize your learning in the cockpit and on the ground.";
 
   return (
-    <main className="min-h-screen">
-      <div className="container max-w-7xl mx-auto py-8 px-4 md:px-6 lg:px-8">
-        {/* New GuidePageHeader Component */}
-        <GuidePageHeader
-          chapter={chapter}
-          title={title}
-          description={description}
-          topicBadges={topicBadges}
-          audioSrc={audioSrc}
-          trackTitle={trackTitle}
-          subtitleSrc={subtitleSrc}
-          headerButtons={headerButtonsData}
-          backgroundImageSrc={backgroundImageSrc}
-        />
-        
-        {/* Render the imported Client Component, passing props */}
-        <TrainingExpectationsContent 
-           tabs={tabs} 
-           prevPage={prevPage} 
-           nextPage={nextPage} 
-           nextTopicSegue={nextTopicSegue} 
-        />
-        
-      </div>
-    </main>
+    <div className="py-8 px-4 md:px-6 lg:px-8">
+      <GuidePageHeader
+        chapter={chapter}
+        title={title}
+        description={description}
+        topicBadges={topicBadges}
+        audioSrc={audioSrc}
+        trackTitle={trackTitle}
+        subtitleSrc={subtitleSrc}
+        headerButtons={headerButtonsData}
+        backgroundImageSrc={backgroundImageSrc}
+      />
+      
+      <TrainingExpectationsContent 
+         tabs={tabs} 
+         prevPage={prevPage} 
+         nextPage={nextPage} 
+         nextTopicSegue={nextTopicSegue} 
+      />
+      
+    </div>
   )
 }
 

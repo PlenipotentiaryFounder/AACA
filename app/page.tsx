@@ -17,7 +17,7 @@ import Link from "next/link"
 
 export default function Home() {
   return (
-    <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 max-w-7xl">
+    <div className="py-8 px-4 md:px-6 lg:px-8">
       {/* Hero Section */}
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-aa-blue to-aa-navy text-white mb-12">
         <div className="absolute inset-0 bg-[url('/images/aircraft-wing-above-clouds.jpg')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>

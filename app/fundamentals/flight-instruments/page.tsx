@@ -15,6 +15,253 @@ export const metadata: Metadata = {
 
 export default function FlightInstrumentsPage() {
   return (
+    <div className="py-6">
+      <div className="space-y-8">
+        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-aa-navy to-aa-blue text-white">
+          <div className="container mx-auto py-6 max-w-5xl">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tight">Flight Instruments</h1>
+                <p className="text-muted-foreground">Understanding the tools that help you fly safely and effectively</p>
+              </div>
+
+              <div className="grid gap-6">
+                <Card className="border-l-4 border-l-blue-600 dark:border-l-blue-400">
+                  <CardHeader>
+                    <CardTitle>Introduction to Flight Instruments</CardTitle>
+                    <CardDescription>The cockpit instruments that provide critical information during flight</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p>
+                      Flight instruments are the pilot's window into the aircraft's performance and position when visual
+                      references are limited or unreliable. Understanding how to interpret these instruments correctly is
+                      essential for safe flying, especially during instrument meteorological conditions (IMC).
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <h3 className="font-semibold">Why Instruments Matter</h3>
+                        <ul className="list-disc pl-5 space-y-1">
+                          <li>Provide objective flight data independent of sensory perception</li>
+                          <li>Enable flight in reduced visibility conditions</li>
+                          <li>Help maintain situational awareness</li>
+                          <li>Allow for precise aircraft control and navigation</li>
+                          <li>Provide early warning of developing problems</li>
+                        </ul>
+                      </div>
+                      <div className="bg-muted rounded-lg p-4">
+                        <h3 className="font-semibold mb-2">Instrument Categories</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Badge variant="outline" className="justify-center">
+                            Pitot-Static
+                          </Badge>
+                          <Badge variant="outline" className="justify-center">
+                            Gyroscopic
+                          </Badge>
+                          <Badge variant="outline" className="justify-center">
+                            Magnetic
+                          </Badge>
+                          <Badge variant="outline" className="justify-center">
+                            Engine
+                          </Badge>
+                          <Badge variant="outline" className="justify-center">
+                            Navigation
+                          </Badge>
+                          <Badge variant="outline" className="justify-center">
+                            Electronic
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Tabs defaultValue="primary" className="w-full">
+                  <TabsList className="grid grid-cols-3 w-full">
+                    <TabsTrigger value="primary">Primary Instruments</TabsTrigger>
+                    <TabsTrigger value="engine">Engine Instruments</TabsTrigger>
+                    <TabsTrigger value="modern">Modern Systems</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="primary" className="space-y-4">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>The Six Pack</CardTitle>
+                        <CardDescription>The six primary flight instruments found in most aircraft</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-6">
+                        <div className="aspect-video relative bg-muted rounded-lg overflow-hidden">
+                          <div className="absolute inset-0 bg-[url('/images/analog-cockpit-instruments.jpg')] bg-cover bg-center"></div>
+                        </div>
+
+                        <Accordion type="single" collapsible className="w-full">
+                          <AccordionItem value="asi">
+                            <AccordionTrigger>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline">1</Badge>
+                                <span>Airspeed Indicator (ASI)</span>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="space-y-2">
+                              <p>
+                                The airspeed indicator displays the aircraft's speed through the air in knots (KIAS) or miles
+                                per hour (MPH).
+                              </p>
+                              <div className="grid md:grid-cols-2 gap-4">
+                                <div>
+                                  <h4 className="font-semibold mb-1">Key Markings</h4>
+                                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                                    <li>
+                                      <span className="font-medium">White Arc:</span> Flap operating range
+                                    </li>
+                                    <li>
+                                      <span className="font-medium">Green Arc:</span> Normal operating range
+                                    </li>
+                                    <li>
+                                      <span className="font-medium">Yellow Arc:</span> Caution range (smooth air only)
+                                    </li>
+                                    <li>
+                                      <span className="font-medium">Red Line:</span> Never exceed speed (VNE)
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold mb-1">Common Errors</h4>
+                                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Position error at high angles of attack</li>
+                                    <li>Blockage of pitot tube or static port</li>
+                                    <li>Altitude and temperature effects on indicated airspeed</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+
+                          <AccordionItem value="ai">
+                            <AccordionTrigger>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline">2</Badge>
+                                <span>Attitude Indicator (AI)</span>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="space-y-2">
+                              <p>
+                                The attitude indicator shows the aircraft's position relative to the horizon, displaying both
+                                pitch (nose up/down) and bank (roll left/right) attitudes.
+                              </p>
+                              <div className="grid md:grid-cols-2 gap-4">
+                                <div>
+                                  <h4 className="font-semibold mb-1">Key Features</h4>
+                                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Artificial horizon line separates "sky" from "ground"</li>
+                                    <li>Miniature aircraft represents your plane's position</li>
+                                    <li>Bank angle indicators (10°, 20°, 30°, 60°)</li>
+                                    <li>Pitch markers (typically in 5° increments)</li>
+                                  </ul>
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold mb-1">Limitations</h4>
+                                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Precession errors during prolonged turns</li>
+                                    <li>Tumbling during extreme maneuvers</li>
+                                    <li>Erroneous readings during acceleration/deceleration</li>
+                                    <li>Requires 3-5 minutes for gyro to spin up</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+
+                          <AccordionItem value="alt">
+                            <AccordionTrigger>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline">3</Badge>
+                                <span>Altimeter</span>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="space-y-2">
+                              <p>
+                                The altimeter displays the aircraft's altitude above mean sea level (MSL) by measuring
+                                atmospheric pressure.
+                              </p>
+                              <div className="grid md:grid-cols-2 gap-4">
+                                <div>
+                                  <h4 className="font-semibold mb-1">Reading the Altimeter</h4>
+                                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Long needle: 100s of feet</li>
+                                    <li>Short needle: 1,000s of feet</li>
+                                    <li>Shortest needle: 10,000s of feet</li>
+                                    <li>Kollsman window: barometric setting</li>
+                                  </ul>
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold mb-1">Altimeter Errors</h4>
+                                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                                    <li>
+                                      <span className="font-medium">Scale Error:</span> Mechanical inaccuracies
+                                    </li>
+                                    <li>
+                                      <span className="font-medium">Installation Error:</span> Static port location effects
+                                    </li>
+                                    <li>
+                                      <span className="font-medium">Barometric Error:</span> "High to low, look out below"
+                                    </li>
+                                    <li>
+                                      <span className="font-medium">Temperature Error:</span> "Cold weather, cold altimeter"
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+
+                          <AccordionItem value="tc">
+                            <AccordionTrigger>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline">4</Badge>
+                                <span>Turn Coordinator</span>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="space-y-2">
+                              <p>
+                                The turn coordinator shows the rate of turn and provides an indication of coordination between
+                                rudder and aileron inputs.
+                              </p>
+                              <div className="grid md:grid-cols-2 gap-4">
+                                <div>
+                                  <h4 className="font-semibold mb-1">Components</h4>
+                                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Miniature aircraft that banks in the direction of turn</li>
+                                    <li>Standard rate turn markers (2-minute turn)</li>
+                                    <li>Inclinometer (slip/skid indicator or "ball")</li>
+                                  </ul>
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold mb-1">Interpretation</h4>
+                                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Standard rate turn: 3° per second</li>
+                                    <li>"Step on the ball" to correct slip/skid</li>
+                                    <li>Ball left = right rudder needed</li>
+                                    <li>Ball right = left rudder needed</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+
+                          <AccordionItem value="hi">
+                            <AccordionTrigger>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline">5</Badge>
+                                <span>Heading Indicator (HI)</span>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="space-y-2">
+                              <p>
+                                The heading indicator (directional gyro) shows the aircraft's magnetic heading with greater
+                                stability and readability than a magnetic compass.
+                              </p>
+                              <div className="grid md:grid-cols-2 gap-4">
+                                <div>
     <div className="container mx-auto py-6 max-w-5xl">
       <div className="space-y-6">
         <div className="space-y-2">

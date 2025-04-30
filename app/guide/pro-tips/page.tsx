@@ -241,28 +241,25 @@ export default function ProTipsPage() {
   // The data is defined above
 
   return (
-    <main className="min-h-screen">
-      <div className="container max-w-7xl mx-auto py-8 px-4 md:px-6 lg:px-8">
-        {/* New GuidePageHeader Component */}
-        <GuidePageHeader
-          chapter={chapter}
-          title={title}
-          description={description}
-          topicBadges={topicBadges}
-          audioSrc={audioSrc}
-          trackTitle={trackTitle}
-          subtitleSrc={subtitleSrc}
-          backgroundImageSrc={backgroundImageSrc}
-        />
+    <div className="py-8 px-4 md:px-6 lg:px-8">
+      <GuidePageHeader
+        chapter={chapter}
+        title={title}
+        description={description}
+        topicBadges={topicBadges}
+        audioSrc={audioSrc}
+        trackTitle={trackTitle}
+        subtitleSrc={subtitleSrc}
+        backgroundImageSrc={backgroundImageSrc}
+      />
 
-        {/* Render the client component, passing the data as props */}
-        <ProTipsContent
-          categories={categories}
-          tips={tips}
-          cadetStories={cadetStories}
-        />
-      </div>
-    </main>
+      {/* Render the client component, passing the data as props */}
+      <ProTipsContent
+        categories={categories}
+        tips={tips}
+        cadetStories={cadetStories}
+      />
+    </div>
   );
 }
 
