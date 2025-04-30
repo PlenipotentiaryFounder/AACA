@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from 'react';
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { PremiumTabs } from "@/components/premium-tabs";
-import { FundamentalsNavigation } from "@/components/fundamentals-navigation";
+import GuidePageHeader from "@/components/guide/guide-page-header";
 import {
   Map,
   ChevronLeft,
@@ -32,13 +32,15 @@ import {
   Smartphone,
   Globe,
   Target,
-  Palette
+  Palette,
+  HelpCircle,
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { usePathname } from 'next/navigation'
+import { FundamentalsNavigation } from '@/components/fundamentals-navigation';
 
 export default function SectionalChartsPage() {
   const pathname = usePathname()
@@ -61,8 +63,7 @@ export default function SectionalChartsPage() {
     <div className="py-8 px-4 md:px-6 lg:px-8">
       <GuidePageHeader
         chapter="Fundamentals"
-        title="Sectional Chart Mastery"
-      />
+        title="Sectional Chart Mastery" description={''} audioSrc={''} trackTitle={''}      />
 
       <div className="space-y-8">
         <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-aa-navy to-aa-blue text-white">
@@ -253,10 +254,6 @@ export default function SectionalChartsPage() {
                     <li>Airport information may be outdated</li>
                     <li>Navigation frequencies may have changed</li>
                   </ul>
-                  <p className="mt-4 font-medium">
-                    The effective dates are printed on the front panel of each chart. Digital chart services
-                    automatically update, but always verify you're using the current edition.
-                  </p>
                 </div>
               </section>
             </div>
@@ -1014,16 +1011,14 @@ CT - 118.3*   ASOS 128.175
                 </div>
              </section>
           </div>
-
-          <FundamentalsNavigation
-            prevPage={prevPage}
-            nextPage={nextPage}
-            currentPageUrl={pathname}
-          />
-
         </div>
+        <FundamentalsNavigation
+          prevPage={prevPage}
+          nextPage={nextPage}
+          currentPageUrl={pathname}
+        />
       </div>
-    </div>
+   
   );
 }
 
