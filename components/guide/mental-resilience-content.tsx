@@ -36,10 +36,10 @@ type PremiumTab = {
   mobileLabel?: string;
 };
 
-type PageLink = {
-  href: string;
-  label: string;
-};
+interface PageLink {
+  name: string;
+  url: string;
+}
 
 // --- Props Interface ---
 interface MentalResilienceContentProps {
@@ -61,35 +61,8 @@ export default function MentalResilienceContent({
   const [currentTab, setCurrentTab] = useState<string>(initialTab);
 
   return (
-    <div className="container py-6 lg:py-10">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-10 sm:px-12 sm:py-16 mb-10 text-white">
-        <div className="relative z-10 max-w-3xl">
-          <h1 className="font-heading text-4xl font-bold tracking-tight lg:text-5xl mb-4">Mental Resilience</h1>
-          <p className="text-xl text-blue-100 max-w-2xl">
-            Building the psychological strength to thrive during flight training and throughout your aviation career
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <div className="flex items-center rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm">
-              <Brain className="mr-1.5 h-4 w-4" />
-              <span>Stress Management</span>
-            </div>
-            <div className="flex items-center rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm">
-              <Zap className="mr-1.5 h-4 w-4" />
-              <span>Performance Psychology</span>
-            </div>
-            <div className="flex items-center rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm">
-              <Heart className="mr-1.5 h-4 w-4" />
-              <span>Wellbeing</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Abstract background elements */}
-        <div className="absolute right-0 top-0 -mt-16 h-64 w-64 rounded-full bg-blue-500 opacity-20 blur-3xl"></div>
-        <div className="absolute bottom-0 left-1/3 -mb-24 h-64 w-64 rounded-full bg-indigo-600 opacity-20 blur-3xl"></div>
-      </div>
+    <div className="container py-6">
+      {/* Remove Hero Section - Now handled by GuidePageHeader */}
 
       {/* Introduction Section */}
       <div className="mb-12 max-w-3xl">
@@ -636,8 +609,8 @@ export default function MentalResilienceContent({
 
        {/* Guide Navigation */}
       <GuideNavigation
-        prevPage={{ name: prevPage.label, url: prevPage.href }}
-        nextPage={{ name: nextPage.label, url: nextPage.href }}
+        prevPage={{ name: prevPage.name, url: prevPage.url }}
+        nextPage={{ name: nextPage.name, url: nextPage.url }}
         nextTopicSegue={nextTopicSegue}
       />
     </div>

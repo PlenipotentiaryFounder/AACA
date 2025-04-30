@@ -10,6 +10,7 @@ interface SubtitleCue {
   start: number;
   end: number;
   text: string;
+  speaker?: string; // Added speaker field
 }
 
 interface AudioPlayerProps {
@@ -23,21 +24,20 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [cues, setCues] = useState<SubtitleCue[]>([]);
-  const [currentSubtitle, setCurrentSubtitle] = useState<string>("");
-  const [isExpanded, setIsExpanded] = useState(false); // State for expansion
-  const [showSubtitles, setShowSubtitles] = useState(true); // State for subtitle visibility
+  const [currentCue, setCurrentCue] = useState<SubtitleCue | null>(null); // Changed to store the whole cue object
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showSubtitles, setShowSubtitles] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // --- VTT Parsing Logic --- 
-  const parseVTT = (vttContent: string): SubtitleCue[] => {
+  const parseVTT = useCallback((vttContent: string): SubtitleCue[] => {
     const lines = vttContent.trim().split(/\r?\n/);
     const parsedCues: SubtitleCue[] = [];
     let i = 0;
 
-    // Skip WEBVTT header if present
+    // Skip WEBVTT header
     if (lines[0].startsWith('WEBVTT')) {
       i++;
-      // Skip potential empty lines or comments after header
       while (i < lines.length && (!lines[i].includes('-->') || lines[i].trim() === '')) {
           i++;
       }
@@ -56,9 +56,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
         }
         return seconds;
     };
+    
+    // Regex to capture speaker tag like <v Speaker Name> at the beginning of a line
+    const speakerRegex = /^<v\s+([^>]+)>(.*)/;
 
     while (i < lines.length) {
-      // Skip potential cue identifier line (optional)
+      // Skip identifier line
       if (!lines[i].includes('-->') && lines[i].trim() !== '') {
           i++;
       }
@@ -66,36 +69,50 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
       // Time line
       if (i < lines.length && lines[i].includes('-->')) {
         const timeLine = lines[i];
-        const [startStr, endStr] = timeLine.split(' --> ').map(s => s.trim().split(' ')[0]); // Handle potential settings after timestamp
+        // Handle potential settings after timestamp
+        const [startStr, endStr] = timeLine.split(' --> ').map(s => s.trim().split(' ')[0]); 
         const start = timeStringToSeconds(startStr);
         const end = timeStringToSeconds(endStr);
         i++;
 
         // Text lines
-        let text = '';
+        let textContent = '';
+        let speaker: string | undefined = undefined;
+        let firstLine = true;
+
         while (i < lines.length && lines[i].trim() !== '') {
-          text += (text ? '\n' : '') + lines[i].trim();
+          let currentLine = lines[i].trim();
+          // Check only the first line of the cue text for speaker tag
+          if (firstLine) {
+              const match = currentLine.match(speakerRegex);
+              if (match && match[1] && match[2]) {
+                  speaker = match[1].trim(); // Extracted speaker name
+                  currentLine = match[2].trim(); // Remaining text for the line
+              }
+              firstLine = false;
+          }
+          textContent += (textContent ? '\n' : '') + currentLine;
           i++;
         }
 
-        if (!isNaN(start) && !isNaN(end) && text) {
-            parsedCues.push({ start, end, text });
+        if (!isNaN(start) && !isNaN(end) && textContent) {
+            parsedCues.push({ start, end, text: textContent, speaker }); // Add speaker if found
         }
       }
 
-      // Skip empty lines between cues
+      // Skip empty lines
       while (i < lines.length && lines[i].trim() === '') {
         i++;
       }
     }
-
+    // console.log("Parsed Cues:", parsedCues); // Optional: for debugging
     return parsedCues;
-  };
+  }, []); // No dependencies needed for parseVTT itself
 
   useEffect(() => {
     if (!subtitleSrc) {
         setCues([]);
-        setCurrentSubtitle("");
+        setCurrentCue(null); // Reset current cue
         return;
     }
 
@@ -110,13 +127,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
         setCues(parsedCues);
       } catch (error) {
         console.error("Error loading or parsing subtitles:", error);
-        setCues([]); // Clear cues on error
+        setCues([]);
+        setCurrentCue(null); // Reset current cue on error
       }
     };
 
     fetchAndParseSubtitles();
 
-  }, [subtitleSrc]); // Re-run when subtitleSrc changes
+  }, [subtitleSrc, parseVTT]); // Include parseVTT in dependency array
   // --- End VTT Parsing Logic ---
 
   const handleLoadedMetadata = useCallback(() => {
@@ -130,33 +148,28 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
       const time = audioRef.current.currentTime;
       setCurrentTime(time);
 
-      // Update subtitle
+      // Update current cue object
       const activeCue = cues.find(cue => time >= cue.start && time <= cue.end);
-      setCurrentSubtitle(activeCue ? activeCue.text : "");
+      setCurrentCue(activeCue || null); // Set the whole cue object or null
     }
-  }, [cues]); // Add cues as dependency
+  }, [cues]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
-        // Reset state when audioSrc changes
         setIsPlaying(false);
         setCurrentTime(0);
         setDuration(0);
-        // Reset subtitle state as well
-        setCurrentSubtitle("");
-        audio.src = audioSrc; // Update source
+        setCurrentCue(null); // Reset current cue
+        audio.src = audioSrc;
 
-        // Add event listeners
         audio.addEventListener('loadedmetadata', handleLoadedMetadata);
         audio.addEventListener('timeupdate', handleTimeUpdate);
         audio.addEventListener('ended', () => setIsPlaying(false));
 
-        // Cleanup function
         return () => {
             audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
             audio.removeEventListener('timeupdate', handleTimeUpdate);
-            // No need to remove 'ended' listener specifically if element is removed
         };
     }
   }, [audioSrc, handleLoadedMetadata, handleTimeUpdate]);
@@ -166,16 +179,13 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        // Ensure audio loads metadata before playing if needed, especially after src change
-        if (audioRef.current.readyState >= 2) { // HAVE_CURRENT_DATA or more
+        if (audioRef.current.readyState >= 2) {
              audioRef.current.play().catch(error => console.error("Error playing audio:", error));
         } else {
-            // Wait for metadata before playing
             audioRef.current.addEventListener('canplay', () => {
                  audioRef.current?.play().catch(error => console.error("Error playing audio:", error));
             }, { once: true })
         }
-        // Expand when playing starts
         if (!isExpanded) {
             setIsExpanded(true);
         }
@@ -189,9 +199,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
         const seekTime = value[0];
         audioRef.current.currentTime = seekTime;
         setCurrentTime(seekTime);
-        // Update subtitle immediately on seek
+        // Update cue immediately on seek
         const activeCue = cues.find(cue => seekTime >= cue.start && seekTime <= cue.end);
-        setCurrentSubtitle(activeCue ? activeCue.text : "");
+        setCurrentCue(activeCue || null);
     }
   };
 
@@ -200,9 +210,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
         const newTime = Math.max(0, audioRef.current.currentTime - 10);
         audioRef.current.currentTime = newTime;
         setCurrentTime(newTime);
-        // Update subtitle immediately on seek
+        // Update cue immediately on seek
         const activeCue = cues.find(cue => newTime >= cue.start && newTime <= cue.end);
-        setCurrentSubtitle(activeCue ? activeCue.text : "");
+        setCurrentCue(activeCue || null);
     }
   };
 
@@ -211,40 +221,44 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
         const newTime = Math.min(duration, audioRef.current.currentTime + 10);
         audioRef.current.currentTime = newTime;
         setCurrentTime(newTime);
-        // Update subtitle immediately on seek
+        // Update cue immediately on seek
         const activeCue = cues.find(cue => newTime >= cue.start && newTime <= cue.end);
-        setCurrentSubtitle(activeCue ? activeCue.text : "");
+        setCurrentCue(activeCue || null);
     }
   };
 
   const formatTime = (timeInSeconds: number): string => {
-    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return '0:00'; // Handle invalid duration
+    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return '0:00';
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = Math.floor(timeInSeconds % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
+  // Function to get speaker color class
+  const getSpeakerClass = (speaker?: string): string => {
+      if (speaker === 'Amelia') return 'text-fuchsia-400';
+      if (speaker === 'Mr. Wright') return 'text-lime-400';
+      return 'text-white/95'; // Default color if no speaker or unknown speaker
+  };
+
   return (
-    // Removed fixed min-height to allow collapse
-    // Removed bottom padding
     <div className="bg-black/20 backdrop-blur-sm rounded-lg p-4 w-full md:w-96 border border-white/10 shadow-xl flex flex-col">
       <audio ref={audioRef} src={audioSrc} preload="metadata" />
       <div className="flex items-center justify-between mb-2">
         <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-blue-200">AACA Deep Dive</p>
-            <p className="text-sm font-medium text-white truncate" title={trackTitle}>{trackTitle}</p>
+            <p className="text-sm font-medium text-white" title={trackTitle}>{trackTitle}</p>
         </div>
-        <div className="flex items-center gap-1"> {/* Reduced gap slightly */} 
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 h-8 w-8" onClick={handleRewind} aria-label="Rewind 10 seconds"> {/* Smaller buttons */} 
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 h-8 w-8" onClick={handleRewind} aria-label="Rewind 10 seconds">
             <Rewind className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 h-9 w-9" onClick={togglePlayPause} aria-label={isPlaying ? "Pause" : "Play"}> {/* Slightly larger play button */} 
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 h-9 w-9" onClick={togglePlayPause} aria-label={isPlaying ? "Pause" : "Play"}>
             {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
           </Button>
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 h-8 w-8" onClick={handleFastForward} aria-label="Fast-forward 10 seconds"> {/* Smaller buttons */} 
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 h-8 w-8" onClick={handleFastForward} aria-label="Fast-forward 10 seconds">
             <FastForward className="h-4 w-4" />
           </Button>
-          {/* CC Button */} 
           {subtitleSrc && (
             <Button 
               variant="ghost" 
@@ -258,56 +272,53 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, trackTitle, subtitl
           )}
         </div>
       </div>
-      {/* Collapsible section for progress and subtitles */}
       <div 
         className={`transition-all duration-500 ease-in-out overflow-hidden ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}
       >
-          {/* Progress Bar Area - moved inside collapsible div */}
           <div className="flex items-center gap-2 mb-3"> 
             <span className="text-xs text-gray-300 w-10 text-center">{formatTime(currentTime)}</span>
             <Slider
-              value={duration ? [currentTime] : [0]} // Ensure value doesn't exceed max before duration loads
-              max={duration || 1} // Set max to 1 initially to avoid potential issues
-              step={0.1} // Finer step for smoother seeking
+              value={duration ? [currentTime] : [0]}
+              max={duration || 1}
+              step={0.1}
               onValueChange={handleSeek}
               className="flex-grow [&>span:first-child]:h-1 [&>span:first-child>span]:bg-white"
               aria-label="Audio progress"
-              disabled={!duration} // Disable slider until duration is known
+              disabled={!duration}
             />
             <span className="text-xs text-gray-300 w-10 text-center">{formatTime(duration)}</span>
           </div>
-          {/* Subtitle Display Area - moved inside collapsible div, added subtitle toggle logic */}
           <div 
             className={`transition-all duration-500 ease-in-out overflow-hidden ${showSubtitles ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}
           >
-              <div className="flex-grow flex items-center justify-center text-center min-h-[60px] h-20 bg-black/15 rounded p-3 overflow-hidden relative">
-                {/* Applying key and transition for fade effect */}
-                <p 
-                  key={currentSubtitle} // Add key to trigger animation on change
-                  className="text-base text-white/95 leading-snug animate-fade-in transition-opacity duration-500 ease-in-out" // Increased text size, added animation class
-                >
-                  {currentSubtitle || "\u00A0"} {/* Use non-breaking space for placeholder */}
-                </p>
+              <div className="flex-grow flex items-center justify-center text-center min-h-[60px] h-auto bg-black/15 rounded p-3 overflow-hidden relative">
+                {currentCue ? (
+                    <p 
+                      key={`${currentCue.start}-${currentCue.speaker || 'nospeaker'}`}
+                      className="text-base text-white/95 leading-snug animate-fade-in transition-opacity duration-500 ease-in-out whitespace-pre-wrap"
+                    >
+                      {currentCue.speaker && (
+                        <span className={`font-semibold mr-2 ${getSpeakerClass(currentCue.speaker)}`}>
+                          {currentCue.speaker}:
+                        </span>
+                      )}
+                      {currentCue.text.split('\n').map((line, index) => (
+                        <React.Fragment key={index}>
+                           {line}
+                           {index < currentCue.text.split('\n').length - 1 && <br />}
+                        </React.Fragment>
+                      ))}
+                    </p>
+                  ) : (
+                    <p className="text-base text-white/95 leading-snug">
+                      {"\u00A0"}
+                    </p>
+                  )}
               </div>
           </div>
       </div>
     </div>
   );
 };
-
-// Add Tailwind config for fade-in animation (if not already present globally)
-/* 
-Add this to your tailwind.config.js keyframes:
-keyframes: {
-  'fade-in': {
-    '0%': { opacity: '0' },
-    '100%': { opacity: '1' },
-  },
-},
-and this to animation:
-animation: {
-  'fade-in': 'fade-in 0.5s ease-in-out',
-},
-*/
 
 export default AudioPlayer; 

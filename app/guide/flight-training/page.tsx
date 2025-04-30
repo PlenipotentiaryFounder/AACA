@@ -39,8 +39,8 @@ const tabs: Tab[] = [
 ]
 
 const prevPage: PageLink = {
-  name: "Knowledge Tests",
-  url: "/guide/knowledge-tests",
+  name: "Resources & Tools",
+  url: "/guide/resources",
 }
 
 const nextPage: PageLink | null = {

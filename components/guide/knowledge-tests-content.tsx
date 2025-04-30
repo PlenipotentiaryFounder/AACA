@@ -69,31 +69,8 @@ export default function KnowledgeTestsContent({
   const [currentTab, setCurrentTab] = useState(tabs[0].value);
 
   return (
-    <div className="container max-w-7xl mx-auto py-8 px-4 md:px-6 lg:px-8">
-      {/* Hero Section - Copied from original */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-aa-blue to-aa-navy text-white mb-12">
-         <div className="absolute inset-0 bg-[url('/images/ground_school.jpg')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
-         <div className="relative z-10 px-6 py-16 md:py-24 md:px-12 max-w-4xl">
-           <Badge className="mb-4 bg-white/20 hover:bg-white/30 text-white border-none">Chapter 6</Badge>
-           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
-             FAA Knowledge Tests
-           </h1>
-           <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl">
-             Conquer the tests. Clear the way. Fly with confidence.
-           </p>
-           <div className="flex flex-wrap gap-4">
-             <Button size="lg" className="bg-white text-aa-navy hover:bg-white/90">
-               Start Preparing
-             </Button>
-             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20">
-               View Test Resources <ChevronRight className="ml-2 h-4 w-4" />
-             </Button>
-           </div>
-         </div>
-         <div className="absolute bottom-0 right-0 w-64 h-64 md:w-96 md:h-96 -mb-12 -mr-12 opacity-20 md:opacity-30">
-           <div className="w-full h-full bg-[url('/images/mock_oral.jpg')] bg-contain bg-no-repeat"></div>
-         </div>
-      </section>
+    <div className="container mx-auto">
+      {/* Hero Section Removed - Now handled by GuidePageHeader */}
 
       {/* Alert - Copied from original */}
       <Alert className="bg-muted border-muted-foreground/20 mb-8">

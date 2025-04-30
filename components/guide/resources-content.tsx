@@ -57,28 +57,19 @@ export default function ResourcesContent({
 
   return (
     <div className="container mx-auto px-4 py-6 md:py-10">
-      {/* Hero Section */}
-      <div className="relative mb-10 rounded-xl bg-gradient-to-r from-aa-blue to-aa-navy p-8 text-white">
-        <div className="absolute right-4 top-4 rounded-full bg-white/10 px-3 py-1 text-xs font-medium">
-          Essential Resources
-        </div>
-        <h1 className="font-display text-3xl font-bold md:text-4xl">Resources & Tools</h1>
-        <p className="mt-2 max-w-3xl text-lg text-white/90">
-          Your comprehensive guide to the essential resources, tools, and references that will support your journey from
-          student pilot to professional aviator.
-        </p>
-      </div>
+      {/* Hero Section Removed - Now handled by GuidePageHeader */}
+      
+      {/* Tabs Component */}
+      <PremiumTabs
+        tabs={tabs}
+        defaultValue={tabs[0].value}
+        currentValue={currentTab}
+        onChange={setCurrentTab}
+        title="Resources & Tools"
+      />
 
       {/* Main Content */}
       <div className="space-y-8">
-        <PremiumTabs
-          tabs={tabs}
-          defaultValue={tabs[0].value}
-          currentValue={currentTab}
-          onChange={setCurrentTab}
-          title="Resources & Tools"
-        />
-
         {/* FAA Resources Tab Content */}
         {currentTab === 'faa' && (
           <div className="space-y-6 pt-6">
