@@ -5,6 +5,7 @@ import { MainHeader } from "@/components/main-header"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import GuidePageHeader from "@/components/guide/guide-page-header"
 import {
   ChevronLeft,
   ChevronRight,
