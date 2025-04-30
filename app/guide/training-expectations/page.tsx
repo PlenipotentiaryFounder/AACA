@@ -17,6 +17,8 @@ import { SidebarInset } from "@/components/ui/sidebar"
 
 // Import the newly created Client Component
 import TrainingExpectationsContent from "@/components/guide/training-expectations-content"
+// Import the Audio Player
+import AudioPlayer from "@/components/guide/audio-player"
 
 // Metadata export remains
 export const metadata: Metadata = {
@@ -79,15 +81,29 @@ export default function TrainingExpectationsPage() {
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-aa-blue to-aa-navy text-white mb-12">
           {/* Ensure necessary icons/components for hero are imported above */}
           <div className="absolute inset-0 bg-[url('/images/multiple-aircraft-on-ramp.jpg')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
-           <div className="relative z-10 px-6 py-16 md:py-24 md:px-12 max-w-4xl">
-               <Badge className="mb-4 bg-white/20 hover:bg-white/30 text-white border-none">Chapter 2</Badge>
-               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
-                   What to Expect in Training
-               </h1>
-               <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl">
-                   A comprehensive overview of your journey from cadet to professional pilot.
-               </p>
-               <div className="flex flex-wrap gap-4">
+           <div className="relative z-10 px-6 py-16 md:py-24 md:px-12">
+               {/* Flex container for text and audio player */}
+               <div className="md:flex md:items-start md:justify-between md:gap-8">
+                   {/* Text Content Area */}
+                   <div className="max-w-4xl mb-8 md:mb-0">
+                       <Badge className="mb-4 bg-white/20 hover:bg-white/30 text-white border-none">Chapter 2</Badge>
+                       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
+                           What to Expect in Training
+                       </h1>
+                       <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl">
+                           A comprehensive overview of your journey from cadet to professional pilot.
+                       </p>
+                   </div>
+                   {/* Audio Player Area */}
+                   <div className="flex-shrink-0">
+                       <AudioPlayer 
+                           audioSrc="/audioFiles/Guide/Train Smarter, Fly Better_ Unlock Your American Airlines Cadet Academy Potential.wav"
+                           trackTitle="Train Smarter, Fly Better" 
+                           subtitleSrc="/audioFiles/Guide/Train Smarter, Fly Better_ Unlock Your American Airlines Cadet Academy Potential.vtt"
+                       />
+                   </div>
+               </div>
+               <div className="flex flex-wrap gap-4 mt-8">
                    <Button size="lg" className="bg-white text-aa-navy hover:bg-white/90">
                        Start Your Journey
                    </Button>

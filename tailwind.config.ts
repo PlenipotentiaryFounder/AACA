@@ -91,12 +91,17 @@ const config = {
           "0%, 100%": { boxShadow: "0 0 5px rgba(0, 120, 210, 0.5)" },
           "50%": { boxShadow: "0 0 20px rgba(0, 120, 210, 0.8)" },
         },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         float: "float 6s ease-in-out infinite",
         glow: "glow 3s ease-in-out infinite",
+        'fade-in': 'fade-in 0.5s ease-in-out',
       },
       boxShadow: {
         glass: "0 4px 30px rgba(0, 0, 0, 0.1)",

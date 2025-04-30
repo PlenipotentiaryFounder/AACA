@@ -1,7 +1,7 @@
 "use client";
 
 // Imports moved from original page.tsx
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from 'next/navigation';
@@ -26,7 +26,6 @@ import {
   Heart,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -57,71 +56,32 @@ interface PageLink {
     url: string;
 }
 
-// Props interface
+// Props interface - Remove audio/button props that belonged to the header
 interface FlightTrainingContentProps {
   tabs: Tab[];
   prevPage: PageLink | null;
   nextPage: PageLink | null;
   nextTopicSegue: string;
+  // Removed audioSrc, trackTitle, subtitleSrc, headerButtons
 }
 
 // The main function moved from page.tsx
-// It keeps the original conditional rendering logic for now.
+// Remove unused props from destructuring
 export default function FlightTrainingContent({ 
   tabs, 
   prevPage, 
   nextPage, 
-  nextTopicSegue 
+  nextTopicSegue
 }: FlightTrainingContentProps) {
   const pathname = usePathname()
   const [currentTab, setCurrentTab] = useState(tabs[0].value);
 
-  // The original JSX goes here
   return (
-    <div className="container mx-auto py-8 space-y-8">
-       {/* Hero Section - Copied from original */}
-       <div className="relative rounded-xl overflow-hidden bg-gradient-to-r from-aa-blue to-aa-navy text-white">
-         {/* ... Hero Content ... */}
-         <div className="absolute inset-0 opacity-20">
-          <Image
-            src="/images/two-pilots-in-cockpit-preflight.jpg"
-            alt="Pilot training"
-            width={1200}
-            height={600}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="relative z-10 p-8 md:p-12 max-w-3xl">
-          <Badge variant="outline" className="mb-4 text-white border-white/40">
-            Chapter 5
-          </Badge>
-          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Maximizing Your Flight Training
-          </h1>
-          <p className="text-lg md:text-xl opacity-90 mb-6">
-            Train smarter. Learn faster. Fly better. This chapter is about becoming the kind of cadet who excels through
-            deliberate practice and strategic preparation.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Badge variant="secondary" className="bg-white/20 hover:bg-white/30">
-              Chair Flying
-            </Badge>
-            <Badge variant="secondary" className="bg-white/20 hover:bg-white/30">
-              Lesson Preparation
-            </Badge>
-            <Badge variant="secondary" className="bg-white/20 hover:bg-white/30">
-              CFI Relationships
-            </Badge>
-            <Badge variant="secondary" className="bg-white/20 hover:bg-white/30">
-              Backseating
-            </Badge>
-          </div>
-        </div>
-      </div>
+    <>
+      {/* Header was removed previously */}
 
-      {/* Alert - Copied from original */}
-      <Alert className="bg-muted border-l-4 border-aa-blue">
-         {/* ... Alert Content ... */}
+      {/* Keep Alert */}
+      <Alert className="bg-muted border-l-4 border-aa-blue mb-8"> 
          <AlertCircle className="h-5 w-5" />
         <AlertTitle className="font-display text-base">Personal Note from Your Instructor</AlertTitle>
         <AlertDescription>
@@ -132,7 +92,7 @@ export default function FlightTrainingContent({
         </AlertDescription>
       </Alert>
 
-      {/* Tabs Section - Refactored with Tabs/TabsContent, preserving original content */}
+      {/* Keep Tabs Section */}
       <div className="space-y-6">
         <Tabs defaultValue={tabs[0].value} value={currentTab} onValueChange={setCurrentTab}>
             <PremiumTabs
@@ -141,8 +101,8 @@ export default function FlightTrainingContent({
               title="Flight Training Strategies"
               className="mb-6" 
             />
-
-            {/* Content moved from conditional blocks into TabsContent */}
+            
+            {/* RESTORE FULL CONTENT FOR EACH TAB */}
             <TabsContent value="chair-flying" className="pt-0">
                <div className="space-y-6">
                  {/* Original content for 'chair-flying' tab */}
@@ -256,7 +216,6 @@ export default function FlightTrainingContent({
 
             <TabsContent value="prepare" className="pt-0">
               <div className="space-y-6">
-                 {/* Original content for 'prepare' tab */}
                 <div className="flex flex-col gap-4">
                   <h2 className="font-display text-2xl font-semibold">Preparing for Each Flight Lesson</h2>
                    <p className="text-muted-foreground">
@@ -339,7 +298,6 @@ export default function FlightTrainingContent({
 
             <TabsContent value="cfi-relationship" className="pt-0">
               <div className="space-y-6">
-                 {/* Original content for 'cfi-relationship' tab */}
                 <div className="flex flex-col gap-4">
                   <h2 className="font-display text-2xl font-semibold">Building a Strong CFI Relationship</h2>
                   <p className="text-muted-foreground">
@@ -418,7 +376,6 @@ export default function FlightTrainingContent({
 
             <TabsContent value="backseating" className="pt-0">
               <div className="space-y-6">
-                {/* Original content for 'backseating' tab */}
                  <div className="flex flex-col gap-4">
                    <h2 className="font-display text-2xl font-semibold">The Power of Backseating</h2>
                    <p className="text-muted-foreground">
@@ -479,7 +436,6 @@ export default function FlightTrainingContent({
 
             <TabsContent value="study-mistakes" className="pt-0">
                <div className="space-y-6">
-                 {/* Original content for 'study-mistakes' tab */}
                  <div className="flex flex-col gap-4">
                    <h2 className="font-display text-2xl font-semibold">Learning from Your Mistakes</h2>
                     <p className="text-muted-foreground">
@@ -517,12 +473,13 @@ export default function FlightTrainingContent({
         </Tabs>
       </div>
 
-      {/* Guide Navigation - Copied from original */}
+      {/* Keep Guide Navigation */}
       <GuideNavigation
         prevPage={prevPage ? { name: prevPage.name, url: prevPage.url } : undefined}
         nextPage={nextPage ? { name: nextPage.name, url: nextPage.url } : undefined}
+        currentPageUrl={pathname} 
         nextTopicSegue={nextTopicSegue}
       />
-    </div>
+    </>
   );
 } 
